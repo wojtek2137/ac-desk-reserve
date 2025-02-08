@@ -7,7 +7,8 @@ const sqlite = new Database('db.sqlite');
 export const reservations = sqliteTable('reservations', {
     id: integer('id').primaryKey({ autoIncrement: true }),
     deskId: integer('desk_id').notNull(),
-    date: text('date').notNull(),
+    dateFrom: text('date_from').notNull(),
+    dateTo: text('date_to').notNull()
 });
 
 export const db = drizzle(sqlite, { schema: { reservations } });

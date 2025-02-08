@@ -14,11 +14,14 @@ export const appRouter = t.router({
         ];
     }),
     reserveDesk: t.procedure
-        .input(z.object({ deskId: z.number(), date: z.string() }))
+        .input(z.object({ deskId: z.number(),
+            dateFrom: z.string(), dateTo: z.string() }))
         .mutation(async ({ input }) => {
             // Dodaj rezerwację do bazy danych
-            const { deskId, date } = input;
-            await db.insert(reservations).values({ deskId, date });
+            const { deskId, dateFrom, dateTo } = input;
+         
+
+            await db.insert(reservations).values({ deskId, dateFrom, dateTo });
             return { success: true, message: 'Rezerwacja udana!' };
         }),
     getReservations: t.procedure.query(async () => {
