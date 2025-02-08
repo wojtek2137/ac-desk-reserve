@@ -1,7 +1,7 @@
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import { db } from './db'; // Import Drizzle
-import { reservations } from './db'; // Import tabeli reservations
+import { reservations } from './schema'; // Import tabeli reservations
 
 const t = initTRPC.create();
 
