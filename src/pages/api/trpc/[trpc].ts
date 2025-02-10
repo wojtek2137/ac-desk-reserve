@@ -6,3 +6,4 @@ export default createNextApiHandler({
     router: appRouter,
     createContext,
 });
+
