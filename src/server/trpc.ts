@@ -1,12 +1,23 @@
-import { initTRPC } from '@trpc/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { db } from './db'; // Import Drizzle
 import { reservations } from './schema'; // Import tabeli reservations
 
-const t = initTRPC.create();
-
+const t = initTRPC.context().create();
+export const protectedProcedure = t.procedure.use(function isAuthed(opts) {
+  if (!opts.ctx.session?.user?.email) {  // UNCOMMENT THIS CHECK
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+    });
+  }
+  return opts.next({
+    ctx: {
+      session: opts.ctx.session,
+    },
+  });
+});
 export const appRouter = t.router({
-    getDesks: t.procedure.query(async () => {
+    getDesks: protectedProcedure.query(async () => {
         return [
             { id: 1, name: 'Biurko 1' },
             { id: 2, name: 'Biurko 2' },
