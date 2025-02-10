@@ -1,6 +1,7 @@
 ///Users/wrejdych/Code/ac-desk-reserve/src/pages/index.tsx
 import { useState } from 'react';
 import { trpc } from '../utils/trpc';
+import TopBar from '@/components/Topbar';
 
 export default function Home() {
     const [selectedDesk, setSelectedDesk] = useState<number | null>(null);
@@ -73,7 +74,9 @@ export default function Home() {
     };
 
     return (
-        <div className="p-4">
+      <>
+      <TopBar />
+      <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Rezerwacja biurek</h1>
             <form onSubmit={handleReserve} className="mt-4">
                 <label htmlFor="desk" className="block mb-2">Biurko:</label>
@@ -138,5 +141,7 @@ export default function Home() {
                 </ul>
             </div>
         </div>
+      </>
+       
     );
 }

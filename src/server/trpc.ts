@@ -1,10 +1,25 @@
 //src/server/trpc.ts
-import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import { db } from './db'; // Import Drizzle
 import { reservations } from './schema'; // Import tabeli reservations
+import { initTRPC, TRPCError } from '@trpc/server';
+import { Context } from './context';
+ 
+const t = initTRPC.context<Context>().create();
 
-const t = initTRPC.create();
+export const protectedProcedure = t.procedure.use(function isAuthed(opts) {
+  if (!opts.ctx.session?.user?.email) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+    });
+  }
+  return opts.next({
+    ctx: {
+      // Infers the `session` as non-nullable
+      session: opts.ctx.session,
+    },
+  });
+});
 
 export const appRouter = t.router({
     getDesks: t.procedure.query(async () => {
@@ -25,7 +40,7 @@ export const appRouter = t.router({
             await db.insert(reservations).values({ deskId, dateFrom, dateTo });
             return { success: true, message: 'Rezerwacja udana!' };
         }),
-    getReservations: t.procedure.query(async () => {
+    getReservations: protectedProcedure.query(async () => {
         // Pobierz wszystkie rezerwacje z bazy danych
         const allReservations = await db.select().from(reservations);
         return allReservations;
