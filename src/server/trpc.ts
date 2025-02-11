@@ -65,10 +65,10 @@ export const appRouter = t.router({
 
     return { success: true, message: 'Reservation successful!' };
   }),
-    getReservations: protectedProcedure.query(async () => {
-        const allReservations = await db.select().from(reservations);
-        return allReservations;
-    }),
+    // getReservations: protectedProcedure.query(async () => {
+        // const allReservations = await db.select().from(reservations);
+        // return allReservations;
+    // }), // to be done nextk
 });
 
 export type AppRouter = typeof appRouter;
