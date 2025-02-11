@@ -21,10 +21,12 @@ export const protectedProcedure = t.procedure.use(function isAuthed(opts) {
 });
 
 export const appRouter = t.router({
+
     getDesks: t.procedure.query(async () => {
       const value = Array.from({ length: 20 }, (_, i) => i + 1);
       return value;
     }),
+
     reserveDesk: protectedProcedure
   .input(z.object({
     deskId: z.number(),
@@ -65,10 +67,11 @@ export const appRouter = t.router({
 
     return { success: true, message: 'Reservation successful!' };
   }),
-    // getReservations: protectedProcedure.query(async () => {
-        // const allReservations = await db.select().from(reservations);
-        // return allReservations;
-    // }), // to be done nextk
+  
+    getReservations: protectedProcedure.query(async () => {
+        const allReservations = await db.select().from(reservations);
+        return allReservations;
+    }), // to be done nextk
 });
 
 export type AppRouter = typeof appRouter;
