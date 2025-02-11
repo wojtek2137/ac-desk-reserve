@@ -1,9 +1,9 @@
-//src/server/trpc.ts
 import { z } from 'zod';
-import { db } from './db'; // Import Drizzle
-import { reservations } from './schema'; // Import tabeli reservations
+import { db } from './db';
+import { reservations } from './schema'; 
 import { initTRPC, TRPCError } from '@trpc/server';
 import { Context } from './context';
+import { and, eq } from 'drizzle-orm';
  
 const t = initTRPC.context<Context>().create();
 
@@ -15,7 +15,6 @@ export const protectedProcedure = t.procedure.use(function isAuthed(opts) {
   }
   return opts.next({
     ctx: {
-      // Infers the `session` as non-nullable
       session: opts.ctx.session,
     },
   });
@@ -23,25 +22,50 @@ export const protectedProcedure = t.procedure.use(function isAuthed(opts) {
 
 export const appRouter = t.router({
     getDesks: t.procedure.query(async () => {
-        return [
-            { id: 1, name: 'Biurko 1' },
-            { id: 2, name: 'Biurko 2' },
-            { id: 3, name: 'Biurko 3' },
-        ];
+      const value = Array.from({ length: 20 }, (_, i) => i + 1);
+      return value;
     }),
-    reserveDesk: t.procedure
-        .input(z.object({ deskId: z.number(),
-            dateFrom: z.string(), dateTo: z.string() }))
-        .mutation(async ({ input }) => {
-            // Dodaj rezerwację do bazy danych
-            const { deskId, dateFrom, dateTo } = input;
-         
+    reserveDesk: protectedProcedure
+  .input(z.object({
+    deskId: z.number(),
+    dateFrom: z.string(),
+    dateTo: z.string(),
+  }))
+  .mutation(async ({ input, ctx }) => {
+    const { deskId, dateFrom, dateTo } = input;
+    const userId = ctx.session.user?.email || ''; //email as user ID
+    const userName = ctx.session.user?.name || 'Anonymous';
 
-            await db.insert(reservations).values({ deskId, dateFrom, dateTo });
-            return { success: true, message: 'Rezerwacja udana!' };
-        }),
+  
+    const existingReservation = await db
+      .select()
+      .from(reservations)
+      .where(
+        and(
+          eq(reservations.deskId, deskId),
+          eq(reservations.dateFrom, dateFrom)
+        ) 
+      ) 
+      .execute(); 
+
+    if (existingReservation.length > 0) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'This desk is already reserved for the selected date.',
+      });
+    }
+
+    await db.insert(reservations).values({
+      deskId,
+      dateFrom,
+      dateTo,
+      userId,
+      userName,
+    });
+
+    return { success: true, message: 'Reservation successful!' };
+  }),
     getReservations: protectedProcedure.query(async () => {
-        // Pobierz wszystkie rezerwacje z bazy danych
         const allReservations = await db.select().from(reservations);
         return allReservations;
     }),
