@@ -1,3 +1,4 @@
+//src/pages/_app.tsx
 import type { AppProps, AppType } from 'next/app';
 import { trpc } from '../utils/trpc';
 import { SessionProvider } from 'next-auth/react';
