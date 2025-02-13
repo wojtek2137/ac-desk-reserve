@@ -10,3 +10,15 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: App
       </SessionProvider>;
 };
 export default trpc.withTRPC(MyApp);
+
+
+// ## MVP
+// 1. desk reservations
+// 2. my reservations view
+// 3. easy access to current date
+
+
+// ## MVP 2.0
+// 1. selecting date and time
+// 2. mobile app view?
+// 3. 

@@ -6,7 +6,7 @@ export default function TopBar() {
   const { data: session } = useSession();
 
   return (
-    <div className="w-full bg-black p-4 flex justify-between items-center shadow-lg relative">
+    <div className="z-40 w-full fixed top-0 left-0 bg-[#004CFF] p-4 flex justify-between items-center shadow-lg">
       <div className="flex items-center gap-2">
         <svg width="56" height="56" viewBox="0 0 306 306" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="153" cy="153" r="110" fill="white"/>

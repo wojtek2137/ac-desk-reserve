@@ -35,7 +35,7 @@ const Desk: React.FC<DeskProps> = ({ deskId, selectedDate, userId}) => {
       className={`p-6 shadow-xl rounded-lg transform transition-all ${
         reservation
           ? reservation.userId === userId
-            ? 'bg-green-100 border-l-4 border-green-500'
+            ? 'bg-[#19CCA3] border-l-4 border-green-500'
             : 'bg-gray-200 border-l-4 border-gray-500'
           : 'bg-white border-l-4 border-blue-500 hover:scale-105'
       }`}
@@ -60,7 +60,7 @@ const Desk: React.FC<DeskProps> = ({ deskId, selectedDate, userId}) => {
       ) : (
         <button
           onClick={handleReserve}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+          className="mt-4 px-4 py-2 bg-[#004CFF] text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
         >
           Reserve
         </button>
