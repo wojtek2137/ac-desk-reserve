@@ -12,7 +12,6 @@ export default function Home() {
   const { refetch: refetchReservations } = trpc.getReservations.useQuery();
 
   const userId = session?.user?.email || '';
-  const userName = session?.user?.name || '';
   const router = useRouter();
 
   const formatDateString = (dateString: string) => {
@@ -63,7 +62,6 @@ export default function Home() {
             deskId={deskId}
             selectedDate={selectedDate}
             userId={userId}
-            userName={userName}
           />
         ))}
       </div>

@@ -4,12 +4,14 @@ interface DeskProps {
   deskId: number;
   selectedDate: string;
   userId: string;
-  userName: string;
 }
 
-const Desk: React.FC<DeskProps> = ({ deskId, selectedDate, userId }) => {
+const Desk: React.FC<DeskProps> = ({ deskId, selectedDate, userId}) => {
   const { data: reservations, refetch } = trpc.getReservations.useQuery();
   const reserveDesk = trpc.reserveDesk.useMutation({
+    onSuccess: () => refetch(),
+  });
+  const removeReservation = trpc.removeReservation.useMutation({
     onSuccess: () => refetch(),
   });
 
@@ -17,6 +19,11 @@ const Desk: React.FC<DeskProps> = ({ deskId, selectedDate, userId }) => {
     const dateFrom = `${selectedDate}T09:00`; 
     const dateTo = `${selectedDate}T17:00`; 
     reserveDesk.mutate({ deskId, dateFrom, dateTo });
+  };
+
+  const handleRemoveReservation = () => {
+    const dateFrom = `${selectedDate}T09:00`; 
+    removeReservation.mutate({ deskId, dateFrom });
   };
 
   const reservation = reservations?.find(
@@ -35,11 +42,21 @@ const Desk: React.FC<DeskProps> = ({ deskId, selectedDate, userId }) => {
     >
       <h3 className="text-xl font-bold text-gray-700">Desk {deskId}</h3>
       {reservation ? (
-        <p className="mt-2 text-md text-gray-600">
-          {reservation.userId === userId
-            ? 'Reserved by you'
-            : `Reserved by ${reservation.userName}`}
-        </p>
+        <div>
+          <p className="mt-2 text-md text-gray-600">
+            {reservation.userId === userId
+              ? 'Reserved by you'
+              : `Reserved by ${reservation.userName}`}
+          </p>
+          {reservation.userId === userId && (
+            <button
+              onClick={handleRemoveReservation}
+              className="mt-4 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
+            >
+              Cancel Reservation
+            </button>
+          )}
+        </div>
       ) : (
         <button
           onClick={handleReserve}
