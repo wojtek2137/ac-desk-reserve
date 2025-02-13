@@ -1,111 +1,80 @@
-import { useState } from "react";
-import { trpc } from "../utils/trpc";
-
-interface DeskProps {
-  deskId: number;
-  selectedDate: string;
-  userId: string;
-  userName: string;
+interface Reservation {
+        deskId: number;
+        userName: string;
+        userId: string;
+        id: number;
+        dateFrom: string;
+        dateTo: string;
 }
 
-const ConferenceRoom: React.FC<DeskProps> = ({ deskId, selectedDate }) => {
-  const { data: reservations } = trpc.getReservations.useQuery();
-  const reservation = reservations?.find(
-    (res) => res.deskId === deskId && res.dateFrom.startsWith(selectedDate)
-  );
+interface NewDeskProps {
+  deskId: number;
+  userId: string;
+  userName: string;
+  onClickReserve: () => void;
+  onClickUnreserve: () => void;
+  reservation?: Reservation;
+}
 
-  console.warn(reservation);
-
-  const [selectedDesk, setSelectedDesk] = useState<number>();
-
-  const handleDeskClick = (deskNumber: number) => {
-    setSelectedDesk(deskNumber);
-  };
-
+const NewDesk: React.FC<NewDeskProps> = ({ deskId, onClickReserve, onClickUnreserve, reservation, userName, userId }) => {
   return (
-    <div className="relative bg-black h-screen flex flex-col items-center justify-between pt-20">
-      <div className="absolute right-10 top-20 bg-blue-500 w-5 h-48 rounded-full text-white text-xs flex justify-center items-center">
+    <div className="h-screen flex flex-col items-center justify-between relative">
+      <div className="absolute right-10 top-0 bg-blue-500 w-5 h-64 rounded-sm text-white text-xs flex justify-center items-center">
         <span className="rotate-90">window</span>
       </div>
-      <div className="absolute right-10 top-80 bg-blue-500 w-5 h-48 rounded-full text-white text-xs flex justify-center items-center">
+      <div className="absolute right-10 top-[30%] bg-blue-500 w-5 h-64 rounded-sm text-white text-xs flex justify-center items-center">
+        <span className="rotate-90">window</span>
+      </div>
+      <div className="absolute right-10 top-[60%] bg-blue-500 w-5 h-64 rounded-sm text-white text-xs flex justify-center items-center">
         <span className="rotate-90">window</span>
       </div>
 
-      <div className="absolute bottom-10 left-10 bg-blue-500 w-5 h-48 rounded-full text-white text-xs flex justify-center items-center">
-        <span className="rotate-90">doors</span>
-      </div>
-
-      <div className="flex flex-col gap-12 w-full items-end mr-36">
-        <div className="grid grid-cols-5 gap-4">
-          {Array.from({ length: 5 }).map((_, index) => {
+      <div className="flex flex-col gap-16 w-full items-end mr-36">
+        <div className="grid grid-cols-4 gap-4">
+            {Array.from({ length: 20 }).map((_, index) => {
             const deskNumber = index + 1;
+            let marginBottom = 0;
+            if (deskNumber <= 4 || (deskNumber > 8 && deskNumber <= 12)) {
+                marginBottom = 100;
+            }
             return (
-              <div
+                <div
                 key={deskNumber}
-                onClick={() => handleDeskClick(deskNumber)}
-                className={`shadow-xl rounded-lg transform transition-all cursor-pointer w-48 hover:scale-105 h-24 bg-yellow-700 rounded-lg flex justify-center items-center text-white text-lg ${
-                  selectedDesk === deskNumber ? "bg-blue-500" : ""
-                }`}
+                className={`p-6 w-64 hover:scale-105 shadow-xl border-4 border-[#a4a9b0] bg-[#dadee5] rounded-sm transform transition-all 
+                 
+                
+                `}
+                style={{
+                    marginBottom: `${marginBottom}px`,
+                }}
               >
-                {deskNumber}
+                <h3 className="text-xl font-bold text-gray-700">Desk {deskId}</h3>
+                {reservation ? (
+                    <>
+                        <p className="mt-2 text-md text-gray-600">
+                            {reservation.userId === userId
+                            ? 'Reserved by you'
+                            : `Reserved by ${userName}`}
+                        </p>
+                        <span className="text-xs text-red-500 " onClick={onClickUnreserve}>x release desk</span>
+                  </>
+                ) : (
+                  <button
+                    onClick={onClickReserve}
+                    className="mt-4 cursor-pointer px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+                  >
+                    Reserve
+                  </button>
+                )}
               </div>
             );
-          })}
+            })}
         </div>
+        
+</div>
 
-        <div className="grid grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, index) => {
-            const deskNumber = index + 1;
-            return (
-              <div
-                key={deskNumber}
-                onClick={() => handleDeskClick(deskNumber)}
-                className={`cursor-pointer w-48 h-24 bg-yellow-700 rounded-lg flex justify-center items-center text-white text-lg ${
-                  selectedDesk === deskNumber ? "bg-blue-500" : ""
-                }`}
-              >
-                {deskNumber}
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="grid grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, index) => {
-            const deskNumber = index + 1;
-            return (
-              <div
-                key={deskNumber}
-                onClick={() => handleDeskClick(deskNumber)}
-                className={`cursor-pointer w-48 h-24 bg-yellow-700 rounded-lg flex justify-center items-center text-white text-lg ${
-                  selectedDesk === deskNumber ? "bg-blue-500" : ""
-                }`}
-              >
-                {deskNumber}
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="grid grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, index) => {
-            const deskNumber = index + 1;
-            return (
-              <div
-                key={deskNumber}
-                onClick={() => handleDeskClick(deskNumber)}
-                className={`cursor-pointer w-48 h-24 bg-yellow-700 rounded-lg flex justify-center items-center text-white text-lg ${
-                  selectedDesk === deskNumber ? "bg-blue-500" : ""
-                }`}
-              >
-                {deskNumber}
-              </div>
-            );
-          })}
-        </div>
-      </div>
     </div>
   );
 };
 
-export default ConferenceRoom;
+export default NewDesk;
