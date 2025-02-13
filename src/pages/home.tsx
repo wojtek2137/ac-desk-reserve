@@ -27,7 +27,7 @@ export default function Home() {
       <TopBar />
       {
         isMobile ? (
-         <p>test</p>
+         <p>here will be a sidebar content: datepicker, mybookings + dropdown with available desks to reserve</p>
         ) : (
           <Booking
             userId={userId}

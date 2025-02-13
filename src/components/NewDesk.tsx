@@ -1,13 +1,16 @@
 import { RemoveIcon } from "@/Icons/RemoveIcon";
 import { trpc } from "../utils/trpc";
+import { UserIcon } from "@/Icons/UserIcon";
+import { CalendarIcon } from "@/Icons/CalendarIcon";
 
 interface NewDeskProps {
   deskId: number;
   selectedDate: string;
   userId: string;
+  onCheckIn: () => void;
 }
 
-const NewDesk: React.FC<NewDeskProps> = ({ deskId, selectedDate, userId }) => {
+const NewDesk: React.FC<NewDeskProps> = ({ deskId, selectedDate, userId, onCheckIn }) => {
   const { data: reservations, refetch } = trpc.getReservations.useQuery();
   const reserveDesk = trpc.reserveDesk.useMutation({
     onSuccess: () => refetch(),
@@ -20,6 +23,7 @@ const NewDesk: React.FC<NewDeskProps> = ({ deskId, selectedDate, userId }) => {
     const dateFrom = `${selectedDate}T09:00`;
     const dateTo = `${selectedDate}T17:00`;
     reserveDesk.mutate({ deskId, dateFrom, dateTo });
+    onCheckIn();
   };
 
   const handleRelease = () => {
@@ -54,15 +58,18 @@ const NewDesk: React.FC<NewDeskProps> = ({ deskId, selectedDate, userId }) => {
       <h3 className="text-xl font-bold text-gray-700">Desk {deskId}</h3>
       {reservation ? (
         <>
-          <p className="mt-2 text-md text-gray-600">
-            {reservation.userId === userId
-              ? "Reserved by you"
-              : `Reserved by ${reservation.userName}`}
+          <p className="mt-2 text-md text-gray-600 flex gap-1 justify-start items-center">
+            <UserIcon />
+            {reservation.userId === userId ? (
+              "Reserved by you"
+            ) : reservation.userName
+            }
           </p>
-          <p>
-            <span className="font-semibold">When: </span>
+          <p className="flex gap-1 justify-start items-center">
+            <CalendarIcon />
             <span>{new Date(reservation.dateFrom).toDateString()}</span>
           </p>
+
           {reservation.userId === userId && (
             <span
               className="absolute top-5 right-5 text-xs text-red-500 cursor-pointer hover:underline"
@@ -79,7 +86,7 @@ const NewDesk: React.FC<NewDeskProps> = ({ deskId, selectedDate, userId }) => {
           onClick={handleCheckin}
           className="mt-4 cursor-pointer px-4 py-2 bg-[#004CFF] text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
         >
-          Reserve
+          Book
         </button>
       )}
     </div>

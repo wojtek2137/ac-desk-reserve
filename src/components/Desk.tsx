@@ -1,3 +1,4 @@
+import { UserIcon } from '@/Icons/UserIcon';
 import { trpc } from '../utils/trpc';
 
 interface DeskProps {
@@ -46,7 +47,11 @@ const Desk: React.FC<DeskProps> = ({ deskId, selectedDate, userId}) => {
           <p className="mt-2 text-md text-gray-600">
             {reservation.userId === userId
               ? 'Reserved by you'
-              : `Reserved by ${reservation.userName}`}
+              : <div className="flex gap-1 justify-center">
+                <UserIcon />
+                {reservation.userName}
+              </div>
+            }
           </p>
           {reservation.userId === userId && (
             <button

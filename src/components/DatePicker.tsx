@@ -19,7 +19,7 @@ const DatePicker = ({
                 type="date"
                 value={selectedDate}
                 onChange={setSelectedDateHandler}
-                className="p-2 border rounded text-black cursor-pointer"
+                className="p-2 border rounded text-black"
                 />
             </div>
             <span className="mt-2 text-md text-black font-semibold bg-[#19CCA3] p-2 rounded-md inline-block">

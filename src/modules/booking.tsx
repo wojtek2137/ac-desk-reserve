@@ -49,6 +49,7 @@ const Booking = ({ userId }: BookingProps) => {
                 deskId={deskId}
                 selectedDate={selectedDate}
                 userId={userId}
+                onCheckIn={() => setActive(true)}
               />
             ))}
           </div>
