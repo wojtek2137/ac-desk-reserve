@@ -23,7 +23,7 @@ export default function Login() {
             <path d="M151.55 156.231C155.029 158.467 159.503 158.467 162.982 156.231L168.449 152.503L127.692 124.918C125.207 123.178 121.479 124.918 121.479 128.148V136.349L142.603 150.515L151.55 156.231Z" fill="black"/>
           </svg>
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Welcome to AC Desk Reservation</h1>
+          <h1 className="text-2xl font-bold mb-5">Welcome to AC Desk Reservation</h1>
           <button
             onClick={() => signIn('google')}
             className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
