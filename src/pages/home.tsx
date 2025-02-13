@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { trpc } from '@/utils/trpc';
 import TopBar from '../components/Topbar';
 import Desk from '../components/Desk';
@@ -9,6 +9,8 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const { data: session, status  } = useSession();
   const { data: desks } = trpc.getDesks.useQuery();
+  const { refetch: refetchReservations } = trpc.getReservations.useQuery();
+
   const userId = session?.user?.email || '';
   const userName = session?.user?.name || '';
   const router = useRouter();
@@ -21,7 +23,10 @@ export default function Home() {
     const year = date.getFullYear();
     return `You're about to reserve the desk for ${dayOfWeek}, ${dayNumber} ${month} ${year}`;
   };
-
+  const setSelectedDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(e.target.value);
+    refetchReservations();
+  }
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -43,7 +48,7 @@ export default function Home() {
           <input
             type="date"
             value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
+            onChange={setSelectedDateHandler}
             className="p-2 border rounded text-black"
           />
         </div>
