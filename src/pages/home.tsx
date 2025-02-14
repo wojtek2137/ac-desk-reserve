@@ -4,13 +4,9 @@ import React, { useEffect } from "react";
 import TopBar from "../components/Topbar";
 import Booking from "@/modules/booking";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { GetStaticProps } from "next";
 
-interface HomeProps {
-  desks: number[];
-}
 
-export default function Home({ desks }: HomeProps) {
+export default function Home() {
   const { data: session, status } = useSession();
   const { isMobile } = useBreakpoint();
 
@@ -35,7 +31,6 @@ export default function Home({ desks }: HomeProps) {
          <p>here will be a sidebar content: datepicker, mybookings + dropdown with available desks to reserve</p>
         ) : (
           <Booking
-            desks={desks}
             userId={userId}
           />
         )
@@ -45,11 +40,3 @@ export default function Home({ desks }: HomeProps) {
   );
 }
 
-
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {
-      desks: [],
-    },
-  };
-};
