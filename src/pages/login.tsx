@@ -16,7 +16,7 @@ export default function Login() {
   return (
     <div>
       <TopBar />
-      <div className="justify-center h-screen  flex flex-col  items-center">
+      <div className="justify-center h-screen flex flex-col items-center">
           <svg width="150" height="150" viewBox="0 0 306 306" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="153" cy="153" r="110" fill="white"/>
             <path d="M190.319 152.752L125.953 195.497C122.971 197.485 121.479 200.715 121.479 203.946V214.632L199.514 163.438C202.993 160.953 205.23 156.976 205.23 152.752C205.23 148.527 203.242 144.55 199.514 142.065L121.479 91.3677V101.308C121.479 104.788 123.219 108.018 125.953 109.758L190.319 152.752Z" fill="black"/>

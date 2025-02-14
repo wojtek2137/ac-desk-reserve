@@ -1,22 +1,29 @@
 import React from "react";
-import { trpc } from "@/utils/trpc";
 import { useSession } from "next-auth/react";
 import { RemoveIcon } from "@/Icons/RemoveIcon";
 import { PinIcon } from "@/Icons/PinIcon";
 
-const MyBookings = () => {
-  const { data: reservations, refetch } = trpc.getReservations.useQuery();
+
+export interface Reservation {
+    userId: string;
+    id: number;
+    deskId: number;
+    dateFrom: string;
+    dateTo: string;
+    userName: string;
+}
+
+interface MyBookingsProps {
+    reservations: Reservation[] | undefined;
+    onRemove: (deskId: number, dateFrom: string) => void;
+}
+
+const MyBookings = ({
+    reservations,
+    onRemove,
+}: MyBookingsProps) => {
   const { data: session } = useSession();
   const userId = session?.user?.email || '';
-
-  const removeReservation = trpc.removeReservation.useMutation({
-    onSuccess: () => refetch(),
-  });
-  
-  const handleRelease = (deskId: number, dateFrom: string) => {
-    removeReservation.mutate({ deskId, dateFrom });
-  };
-
 
   return (
     <>
@@ -44,7 +51,7 @@ const MyBookings = () => {
           
           return (
             <li key={id}
-            className="p-2 flex text-black justify-between items-center border rounded shadow-sm hover:bg-gray-100 transition-colors bg-white cursor-pointer text-gray-900 font-medium"
+            className="p-2 flex text-black justify-between items-center border rounded shadow-xl hover:bg-gray-100 transition-colors bg-white cursor-pointer text-gray-900 font-medium"
             >
              <div>
                 <span className="font-semibold">When: </span>
@@ -55,7 +62,7 @@ const MyBookings = () => {
                 <span>{deskId}</span>
               </div>
               <button
-                onClick={() => handleRelease(deskId, dateFrom)}
+                onClick={() => onRemove(deskId, dateFrom)}
               >
                 <RemoveIcon />
               </button>

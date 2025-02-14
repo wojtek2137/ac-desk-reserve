@@ -10,7 +10,13 @@ interface NewDeskProps {
   onCheckIn: () => void;
 }
 
-const NewDesk: React.FC<NewDeskProps> = ({ deskId, selectedDate, userId, onCheckIn }) => {
+const NewDesk: React.FC<NewDeskProps> = ({
+  deskId,
+  selectedDate,
+  userId,
+  onCheckIn,
+}) => {
+  // TODO think about extracting reservations from outside
   const { data: reservations, refetch } = trpc.getReservations.useQuery();
   const reserveDesk = trpc.reserveDesk.useMutation({
     onSuccess: () => refetch(),
@@ -31,11 +37,11 @@ const NewDesk: React.FC<NewDeskProps> = ({ deskId, selectedDate, userId, onCheck
     removeReservation.mutate({ deskId, dateFrom });
   };
 
-  const reservation = reservations?.find(
+  const existingReservation = reservations?.find(
     (res) => res.deskId === deskId && res.dateFrom.startsWith(selectedDate)
   );
-  let marginBottom = 0;
 
+  let marginBottom = 0;
   if (deskId <= 4 || (deskId > 8 && deskId <= 12)) {
     marginBottom = 100;
   }
@@ -44,8 +50,8 @@ const NewDesk: React.FC<NewDeskProps> = ({ deskId, selectedDate, userId, onCheck
       key={deskId}
       className={`p-6 w-64 hover:scale-105 shadow-xl rounded-lg transform transition-all 
                 ${
-                  reservation
-                    ? reservation.userId === userId
+                  existingReservation
+                    ? existingReservation.userId === userId
                       ? "bg-green-100 border-l-4 border-[#19CCA3]"
                       : "bg-gray-200 border-l-4 border-blue-500 opacity-50"
                     : "border-4 border-[#a4a9b0] bg-[#dadee5]"
@@ -56,21 +62,20 @@ const NewDesk: React.FC<NewDeskProps> = ({ deskId, selectedDate, userId, onCheck
       }}
     >
       <h3 className="text-xl font-bold text-gray-700">Desk {deskId}</h3>
-      {reservation ? (
+      {existingReservation ? (
         <>
           <p className="mt-2 text-md text-gray-600 flex gap-1 justify-start items-center">
             <UserIcon />
-            {reservation.userId === userId ? (
-              "Reserved by you"
-            ) : reservation.userName
-            }
+            {existingReservation.userId === userId
+              ? "Reserved by You"
+              : existingReservation.userName}
           </p>
           <p className="flex gap-1 justify-start items-center">
             <CalendarIcon />
-            <span>{new Date(reservation.dateFrom).toDateString()}</span>
+            <span>{new Date(existingReservation.dateFrom).toDateString()}</span>
           </p>
 
-          {reservation.userId === userId && (
+          {existingReservation.userId === userId && (
             <span
               className="absolute top-5 right-5 text-xs text-red-500 cursor-pointer hover:underline"
               onClick={handleRelease}

@@ -10,7 +10,7 @@ interface BookingProps {
   userId: string;
 }
 
-const Booking = ({ userId}: BookingProps) => {
+const Booking = ({ userId }: BookingProps) => {
   const [active, setActive] = useState(true);
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
@@ -31,11 +31,15 @@ const Booking = ({ userId}: BookingProps) => {
     refetchReservations();
   };
 
-  // TODO simple handler to reset a date to today, date input cointains this already so we can remove it
-  //   const resetToToday = () => {
-  //     setSelectedDate(new Date().toISOString().split('T')[0]);
-  //     refetchReservations();
-  //   };
+  const { data: reservations, refetch } = trpc.getReservations.useQuery();
+
+  const removeReservation = trpc.removeReservation.useMutation({
+    onSuccess: () => refetch(),
+  });
+
+  const handleRelease = (deskId: number, dateFrom: string) => {
+    removeReservation.mutate({ deskId, dateFrom });
+  };
 
   return (
     <div className="p-4 relative grid grid-flow-col gap-3 mt-[90px]">
@@ -61,7 +65,7 @@ const Booking = ({ userId}: BookingProps) => {
           setSelectedDateHandler={setSelectedDateHandler}
           formattedDate={formattedDate}
         />
-        <MyBookings />
+        <MyBookings reservations={reservations} onRemove={handleRelease} />
       </Sidebar>
     </div>
   );

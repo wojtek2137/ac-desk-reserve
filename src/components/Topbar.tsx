@@ -25,7 +25,7 @@ export default function TopBar() {
             {session.user?.image && (
               <Image
                 src={session.user.image}
-                alt="User avatar"
+                alt="avatar"
                 width={40}
                 height={40}
                 className="rounded-full border-2 border-white hover:border-gray-200 transition duration-300"

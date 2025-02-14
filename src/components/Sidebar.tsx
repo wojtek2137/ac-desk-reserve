@@ -18,7 +18,7 @@ const Sidebar = ({
   return (
     <div
       className={`p-4 z-[100] mt-[88px] opacity-95 fixed left-0 top-0 h-screen text-white transition-all duration-300 ease-in-out ${
-        isActive ? 'w-[30%] border-r-4 border-[#004CFF]' : 'w-5 bg-[#004CFF]'
+        isActive ? 'w-[30%] border-r-4 border-[#004CFF] bg-[#F7F9FF]' : 'w-5 bg-[#004CFF]'
       }`}
     >
       <button
