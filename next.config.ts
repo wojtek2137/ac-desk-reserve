@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     domains: ['lh3.googleusercontent.com'],
   },
-  output: "export",
+  // output: "export",
   /* other config options here */
 };
 
