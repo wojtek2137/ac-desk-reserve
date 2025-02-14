@@ -1,14 +1,25 @@
-import { UserIcon } from '@/Icons/UserIcon';
-import { trpc } from '../utils/trpc';
+import { RemoveIcon } from "@/Icons/RemoveIcon";
+import { trpc } from "../utils/trpc";
+import { UserIcon } from "@/Icons/UserIcon";
+import { CalendarIcon } from "@/Icons/CalendarIcon";
+import { Spinner } from './Spinner';
 
-interface DeskProps {
+interface NewDeskProps {
   deskId: number;
   selectedDate: string;
   userId: string;
+  onCheckIn: () => void;
 }
 
-const Desk: React.FC<DeskProps> = ({ deskId, selectedDate, userId}) => {
-  const { data: reservations, refetch } = trpc.getReservations.useQuery();
+
+
+const Desk: React.FC<NewDeskProps> = ({
+  deskId,
+  selectedDate,
+  userId,
+  onCheckIn,
+}) => {
+  const { data: reservations, refetch} = trpc.getReservations.useQuery();
   const reserveDesk = trpc.reserveDesk.useMutation({
     onSuccess: () => refetch(),
   });
@@ -16,58 +27,75 @@ const Desk: React.FC<DeskProps> = ({ deskId, selectedDate, userId}) => {
     onSuccess: () => refetch(),
   });
 
-  const handleReserve = () => {
-    const dateFrom = `${selectedDate}T09:00`; 
-    const dateTo = `${selectedDate}T17:00`; 
+  const handleCheckin = () => {
+    const dateFrom = `${selectedDate}T09:00`;
+    const dateTo = `${selectedDate}T17:00`;
     reserveDesk.mutate({ deskId, dateFrom, dateTo });
+    onCheckIn();
   };
 
-  const handleRemoveReservation = () => {
-    const dateFrom = `${selectedDate}T09:00`; 
+  const handleRelease = () => {
+    const dateFrom = `${selectedDate}T09:00`;
     removeReservation.mutate({ deskId, dateFrom });
   };
 
-  const reservation = reservations?.find(
+  const existingReservation = reservations?.find(
     (res) => res.deskId === deskId && res.dateFrom.startsWith(selectedDate)
   );
 
+  let marginBottom = 0;
+  if (deskId <= 4 || (deskId > 8 && deskId <= 12)) {
+    marginBottom = 100;
+  }
+
   return (
     <div
-      className={`p-6 shadow-xl rounded-lg transform transition-all ${
-        reservation
-          ? reservation.userId === userId
-            ? 'bg-[#19CCA3] border-l-4 border-green-500'
-            : 'bg-gray-200 border-l-4 border-gray-500'
-          : 'bg-white border-l-4 border-blue-500 hover:scale-105'
-      }`}
+      key={deskId}
+      className={`p-6 w-64 hover:scale-105 shadow-xl rounded-lg transform transition-all 
+                ${
+                  existingReservation
+                    ? existingReservation.userId === userId
+                      ? "bg-green-100 border-l-4 border-[#19CCA3]"
+                      : "bg-gray-200 border-l-4 border-blue-500 opacity-50"
+                    : "bg-[#dadee5]"
+                }
+            `}
+      style={{
+        marginBottom: `${marginBottom}px`,
+      }}
     >
       <h3 className="text-xl font-bold text-gray-700">Desk {deskId}</h3>
-      {reservation ? (
-        <div>
-          <p className="mt-2 text-md text-gray-600">
-            {reservation.userId === userId
-              ? 'Reserved by you'
-              : <div className="flex gap-1 justify-center">
-                <UserIcon />
-                {reservation.userName}
-              </div>
-            }
+      {existingReservation ? (
+        <>
+          <p className="mt-2 text-md text-gray-600 flex gap-1 justify-start items-center">
+            <UserIcon />
+            {existingReservation.userId === userId
+              ? "Reserved by You"
+              : existingReservation.userName}
           </p>
-          {reservation.userId === userId && (
-            <button
-              onClick={handleRemoveReservation}
-              className="mt-4 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
+          <p className="flex gap-1 justify-start items-center">
+            <CalendarIcon />
+            <span>{new Date(existingReservation.dateFrom).toDateString()}</span>
+          </p>
+
+          {existingReservation.userId === userId && (
+            <span
+              className="absolute top-5 right-5 text-xs text-red-500 cursor-pointer hover:underline"
+              onClick={handleRelease}
+              title="Release reservation"
+              aria-label="Release reservation"
             >
-              Cancel Reservation
-            </button>
+              {removeReservation.status === "pending" ? <Spinner /> : <RemoveIcon />}
+            </span>
           )}
-        </div>
+        </>
       ) : (
         <button
-          onClick={handleReserve}
-          className="mt-4 px-4 py-2 bg-[#004CFF] text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+          onClick={handleCheckin}
+          className="mt-4 cursor-pointer px-4 py-2 bg-[#004CFF] text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+          disabled={reserveDesk.status === "pending"}
         >
-          Reserve
+          {reserveDesk.status === "pending" ? <Spinner /> : "Book"}
         </button>
       )}
     </div>

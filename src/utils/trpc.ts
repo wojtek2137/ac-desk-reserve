@@ -15,7 +15,7 @@ function getBaseUrl() {
 //     return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
   // assume localhost
   // return `https://ac-desk-reserve.vercel.app`;
-  return 'http://localhost:3000';
+  return `http://localhost:${process.env.PORT}`;
 }
 export const trpc = createTRPCNext<AppRouter>({
   config(opts) {

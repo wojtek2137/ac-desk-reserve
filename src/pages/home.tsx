@@ -5,6 +5,7 @@ import TopBar from "../components/Topbar";
 import Booking from "@/modules/booking";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import MobileBooking from "@/modules/mobileBooking";
+import { Spinner } from '@/components/Spinner';
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -20,7 +21,7 @@ export default function Home() {
   }, [status, router]);
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   return (

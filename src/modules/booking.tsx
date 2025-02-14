@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { trpc } from "@/utils/trpc";
-import NewDesk from "@/components/NewDesk";
+import Desk from "@/components/Desk";
 import Sidebar from "@/components/Sidebar";
 import DatePicker from "@/components/DatePicker";
 import MyBookings from "./myBookings";
@@ -23,15 +23,6 @@ const Booking = ({ userId }: BookingProps) => {
     refetchReservations();
   };
 
-  const { data: reservations, refetch } = trpc.getReservations.useQuery();
-
-  const removeReservation = trpc.removeReservation.useMutation({
-    onSuccess: () => refetch(),
-  });
-
-  const handleRelease = (deskId: number, dateFrom: string) => {
-    removeReservation.mutate({ deskId, dateFrom });
-  };
 
   return (
     <div className="p-4 relative grid grid-flow-col gap-3 mt-[90px]">
@@ -40,7 +31,7 @@ const Booking = ({ userId }: BookingProps) => {
         <div className="flex flex-col w-full items-end mr-36">
           <div className="grid grid-cols-4 gap-4">
             {desks?.map((deskId) => (
-              <NewDesk
+              <Desk
                 key={deskId}
                 deskId={deskId}
                 selectedDate={selectedDate}
@@ -56,7 +47,7 @@ const Booking = ({ userId }: BookingProps) => {
           selectedDate={selectedDate}
           setSelectedDateHandler={setSelectedDateHandler}
         />
-        <MyBookings reservations={reservations} onRemove={handleRelease} />
+        <MyBookings />
       </Sidebar>
     </div>
   );
