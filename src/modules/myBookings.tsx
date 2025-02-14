@@ -17,6 +17,7 @@ const MyBookings = () => {
     removeReservation.mutate({ deskId, dateFrom });
   };
 
+
   return (
     <>
         <h2 className="text-2xl font-bold text-black">My Reservations</h2>

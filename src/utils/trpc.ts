@@ -1,6 +1,9 @@
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 import type { AppRouter } from '../server/trpc';
+import { config } from 'dotenv';
+
+config({ path: ".env" })
 function getBaseUrl() {
 //   if (typeof window !== 'undefined')
 //     // browser should use relative path
