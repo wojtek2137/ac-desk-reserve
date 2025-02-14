@@ -3,7 +3,7 @@ export const CalendarIcon = ({ fill, width = 16, height = 16 }: { fill?: string,
     width={width}
     height={height}
     viewBox="0 0 16 16"
-    fill={fill ?? 'white'}
+    fill={fill ?? '#394863'}
     xmlns="http://www.w3.org/2000/svg"
   >
     <g clip-path="url(#clip0_35_2019)">

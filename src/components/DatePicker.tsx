@@ -28,7 +28,7 @@ const DatePicker = ({
       <span className="mt-2 text-md font-semibold p-2 flex flex-col">
         <p className="text-xl mb-2">You`re about to reserve the desk for:</p>
         <div className='flex flex-row items-center'>
-          <CalendarIcon fill="#394863" width={24} height={24} /> <span className='ml-2 text-[#004CFF] text-2xl pt-[4px]'>{getFormattedDate(selectedDate)}</span>
+          <CalendarIcon  width={24} height={24} /> <span className='ml-2 text-[#004CFF] text-2xl pt-[4px]'>{getFormattedDate(selectedDate)}</span>
         </div>
       </span>
     </div>
