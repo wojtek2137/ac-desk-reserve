@@ -13,7 +13,7 @@ const MyBookings = () => {
   return (
     <>
       <h2 className='text-2xl font-bold text-black border-b-2'>My Reservations</h2>
-      <div className='flex gap-2 text-black'>
+      <div className='flex gap-2 text-black mt-4'>
         <PinIcon />
         <p>Brain Park Fabryczna 1, 31-553 Kraków</p>
       </div>

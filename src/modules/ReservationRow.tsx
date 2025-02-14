@@ -42,7 +42,7 @@ const ReservationRow = ({ reservation }: ReservationRowProps) => {
         <span className='font-semibold'>Desk: </span>
         <span>{deskId}</span>
       </div>
-      <button onClick={() => handleRelease(deskId, dateFrom)}>
+      <button onClick={() => handleRelease(deskId, dateFrom)} className='flex items-center justify-center'>
         {removeReservation.status === 'pending' ? <Spinner /> : <RemoveIcon />}
       </button>
     </li>
