@@ -1,5 +1,6 @@
 import React from "react";
 import { getFormattedDate } from "@/utils/getFormattedDate";
+import { CalendarIcon } from '@/Icons/CalendarIcon';
 
 interface DatePickerProps {
   selectedDate: string;
@@ -25,8 +26,10 @@ const DatePicker = ({
         />
       </div>
       <span className="mt-2 text-md font-semibold p-2 flex flex-col">
-        <p className="text-lg mb-2">You`re about to reserve the desk for:</p>
-        <p className="text-xl rounded-md text-white p-2 bg-[#004CFF] w-fit">{getFormattedDate(selectedDate)}</p>
+        <p className="text-xl mb-2">You`re about to reserve the desk for:</p>
+        <div className='flex flex-row items-center'>
+          <CalendarIcon fill="#394863" width={24} height={24} /> <span className='ml-2 text-[#004CFF] text-2xl pt-[4px]'>{getFormattedDate(selectedDate)}</span>
+        </div>
       </span>
     </div>
   );
