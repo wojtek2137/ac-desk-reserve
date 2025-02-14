@@ -1,15 +1,14 @@
 import React from "react";
+import { getFormattedDate } from "@/utils/getFormattedDate";
 
 interface DatePickerProps {
   selectedDate: string;
   setSelectedDateHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  formattedDate: (selectedDate: string) => string;
 }
 
 const DatePicker = ({
   selectedDate,
   setSelectedDateHandler,
-  formattedDate,
 }: DatePickerProps) => {
   return (
     <div className="text-black flex flex-col gap-2 items-start mb-10">
@@ -25,8 +24,9 @@ const DatePicker = ({
           className="p-2 border rounded text-black focus:outline-none"
         />
       </div>
-      <span className="mt-2 text-md text-white font-semibold bg-[#004CFF] p-2 rounded-md inline-block text-wrap">
-        {formattedDate(selectedDate)}
+      <span className="mt-2 text-md font-semibold p-2 flex flex-col">
+        <p className="text-lg mb-2">You`re about to reserve the desk for:</p>
+        <p className="text-xl rounded-md text-white p-2 bg-[#004CFF] w-fit">{getFormattedDate(selectedDate)}</p>
       </span>
     </div>
   );

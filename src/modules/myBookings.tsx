@@ -60,9 +60,8 @@ const MyBookings = ({ reservations, onRemove }: MyBookingsProps) => {
           <p>Brain Park Fabryczna 1, 31-553 Kraków</p>
         </div>
       </div>
-      {test?.filter((reservation) => reservation.userId === userId).length ===
-      0 ? (
-        <p className="text-black w-full mt-38 flex gap-2 items-center ml-1">
+      {test?.filter((reservation) => reservation.userId === userId).length === 0 ? (
+        <p className="text-black w-full mt-5 flex gap-2 items-center ml-1">
           <CalendarIcon /> You don`t have any reservations yet
         </p>
       ) : (

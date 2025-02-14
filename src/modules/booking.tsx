@@ -18,14 +18,6 @@ const Booking = ({ userId }: BookingProps) => {
   const { data: desks } = trpc.getDesks.useQuery();
   const { refetch: refetchReservations } = trpc.getReservations.useQuery();
 
-  const formattedDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
-    const dayNumber = date.getDate();
-    const month = date.toLocaleDateString("en-US", { month: "long" });
-    const year = date.getFullYear();
-    return `You're about to reserve the desk for ${dayOfWeek}, ${dayNumber} ${month} ${year}`;
-  };
   const setSelectedDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
     refetchReservations();
@@ -63,7 +55,6 @@ const Booking = ({ userId }: BookingProps) => {
         <DatePicker
           selectedDate={selectedDate}
           setSelectedDateHandler={setSelectedDateHandler}
-          formattedDate={formattedDate}
         />
         <MyBookings reservations={reservations} onRemove={handleRelease} />
       </Sidebar>
