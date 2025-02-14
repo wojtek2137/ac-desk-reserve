@@ -1,10 +1,11 @@
-import { Reservation } from "@/modules/myBookings";
+import { ReservationType } from '@/modules/ReservationRow';
+
 
 interface SelectDeskOptionProps {
   deskId: number;
   selectedDate: string;
   userId: string;
-  reservations: Reservation[] | undefined;
+  reservations: ReservationType[] | undefined;
 }
 
 const SelectDeskOption = ({

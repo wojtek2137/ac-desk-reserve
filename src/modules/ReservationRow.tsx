@@ -4,7 +4,7 @@ import { trpc } from '@/utils/trpc';
 import { Spinner } from '@/components/Spinner';
 import { RemoveIcon } from '@/Icons/RemoveIcon';
 
-interface Reservation {
+export interface ReservationType {
   userId: string;
   id: number;
   deskId: number;
@@ -13,7 +13,7 @@ interface Reservation {
   userName: string;
 }
 interface ReservationRowProps {
-    reservation: Reservation;
+    reservation: ReservationType;
 }
 
 const ReservationRow = ({ reservation }: ReservationRowProps) => {
