@@ -51,6 +51,10 @@ const MobileBooking = ({ userId }: BookingProps) => {
 
   return (
     <div className="p-4 relative gap-3 mt-[90px] ">
+      <DatePicker
+        selectedDate={selectedDate}
+        setSelectedDateHandler={setSelectedDateHandler}
+      />
       <div className="w-full mb-10">
         <h1 className="text-2xl block text-black font-bold mb-2 border-b-2">
           Select Desk
@@ -74,10 +78,7 @@ const MobileBooking = ({ userId }: BookingProps) => {
           ))}
         </select>
       </div>
-      <DatePicker
-        selectedDate={selectedDate}
-        setSelectedDateHandler={setSelectedDateHandler}
-      />
+      
       <MyBookings reservations={reservations} onRemove={handleRelease} />
     </div>
   );
