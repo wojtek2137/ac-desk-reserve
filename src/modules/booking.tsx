@@ -8,14 +8,15 @@ import RoomWindows from "@/components/RoomWindows";
 
 interface BookingProps {
   userId: string;
+  desks: number[];
 }
 
-const Booking = ({ userId }: BookingProps) => {
+const Booking = ({ userId, desks }: BookingProps) => {
   const [active, setActive] = useState(true);
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
-  const { data: desks } = trpc.getDesks.useQuery();
+//   const { data: desks } = trpc.getDesks.useQuery();
   const { refetch: refetchReservations } = trpc.getReservations.useQuery();
 
   const formattedDate = (dateString: string): string => {
