@@ -25,7 +25,7 @@ const DatePicker = ({
           className="p-2 border rounded text-black"
         />
       </div>
-      <span className="mt-2 text-md text-black font-semibold bg-[#19CCA3] p-2 rounded-md inline-block">
+      <span className="mt-2 text-md text-white font-semibold bg-[#004CFF] p-2 rounded-md inline-block">
         {formattedDate(selectedDate)}
       </span>
     </div>
