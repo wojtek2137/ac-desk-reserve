@@ -15,10 +15,9 @@ function getBaseUrl() {
 //     // reference for render.com
 //     return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
   // assume localhost
-  return `http://localhost:${process.env.PORT ?? 3000}`;
+  return 'https://ac-desk-reserve.vercel.app';
 }
-export const trpc = createTRPCNext<AppRouter>({
-  config(opts) {
+export const trpc = createTRPCNext<AppRouter>({   config(opts) {
     return {
       links: [
         httpBatchLink({
