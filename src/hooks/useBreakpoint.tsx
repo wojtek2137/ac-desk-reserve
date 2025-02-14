@@ -24,7 +24,7 @@ export const useBreakpoint = () => {
 
   useEffect(() => {
     const isLandscape = window.orientation > 0;
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    const mediaQuery = window.matchMedia('(max-width: 900px)');
 
     mediaQuery.addListener(updateTarget);
 

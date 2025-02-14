@@ -16,7 +16,7 @@ export default function TopBar() {
           <path d="M151.55 156.231C155.029 158.467 159.503 158.467 162.982 156.231L168.449 152.503L127.692 124.918C125.207 123.178 121.479 124.918 121.479 128.148V136.349L142.603 150.515L151.55 156.231Z" fill="black"/>
         </svg>
 
-        <span className={`text-white ${isMobile ? 'text-xl' : 'text-2xl'} font-bold font-sans hover:text-gray-200 transition duration-300`}>
+        <span className={`text-white ${isMobile ? 'text-lg' : 'text-2xl'} font-bold font-sans hover:text-gray-200 transition duration-300`}>
           AC Desk Reservation
         </span>
       </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { trpc } from "@/utils/trpc";
 import DatePicker from "@/components/DatePicker";
 import MyBookings from "./myBookings";
-import SelectDeskOption from "@/components/SelectDesk";
+import SelectDeskOption from "@/components/SelectDeskOption";
 
 interface BookingProps {
   userId: string;
@@ -59,17 +59,17 @@ const MobileBooking = ({ userId }: BookingProps) => {
   };
 
   return (
-    <div className="p-4 relative gap-3 mt-[90px]">
-      <div className="w-full">
-        <label htmlFor="desk" className="block text-black font-bold mb-2">
+    <div className="p-4 relative gap-3 mt-[90px] ">
+      <div className="w-full mb-10">
+        <h1 className="text-2xl block text-black font-bold mb-2 border-b-2">
           Select Desk
-        </label>
+        </h1>
         <select
           id="desk"
           value={selectedDesk ?? ""}
           onChange={handleDeskSelect}
           required
-          className="p-3 border text-black rounded w-full"
+          className="p-3 border text-black rounded w-full focus:outline-none"
         >
           <option value="">Choose a desk</option>
           {desks?.map((deskId) => (

@@ -23,7 +23,7 @@ const Sidebar = ({
     >
       <button
         onClick={onClick}
-        className="absolute -right-5 top-9 bg-[#F7F9FF] text-white p-2 rounded-full focus:outline-none border-2 border-[#004CFF]"
+        className="absolute -right-5 top-4 bg-[#F7F9FF] text-white p-2 rounded-full focus:outline-none border-2 border-[#004CFF]"
         aria-label={isActive ? 'Collapse sidebar' : 'Expand sidebar'}
       >
         {isActive ? <CloseIcon /> : <OpenIcon />}
