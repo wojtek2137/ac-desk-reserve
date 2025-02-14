@@ -54,7 +54,7 @@ const NewDesk: React.FC<NewDeskProps> = ({
                     ? existingReservation.userId === userId
                       ? "bg-green-100 border-l-4 border-[#19CCA3]"
                       : "bg-gray-200 border-l-4 border-blue-500 opacity-50"
-                    : "border-4 border-[#a4a9b0] bg-[#dadee5]"
+                    : "bg-[#dadee5]"
                 }
             `}
       style={{
