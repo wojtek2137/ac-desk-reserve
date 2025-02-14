@@ -1,9 +1,11 @@
-//src/components/Topbar.tsx
+// src/components/Topbar.tsx
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
 
 export default function TopBar() {
   const { data: session } = useSession();
+  const { isMobile } = useBreakpoint();
 
   return (
     <div className="z-40 w-full fixed top-0 left-0 bg-[#004CFF] p-4 flex justify-between items-center shadow-lg">
@@ -14,7 +16,7 @@ export default function TopBar() {
           <path d="M151.55 156.231C155.029 158.467 159.503 158.467 162.982 156.231L168.449 152.503L127.692 124.918C125.207 123.178 121.479 124.918 121.479 128.148V136.349L142.603 150.515L151.55 156.231Z" fill="black"/>
         </svg>
 
-        <span className="text-white text-2xl font-bold font-sans hover:text-gray-200 transition duration-300">
+        <span className={`text-white ${isMobile ? 'text-xl' : 'text-2xl'} font-bold font-sans hover:text-gray-200 transition duration-300`}>
           AC Desk Reservation
         </span>
       </div>
@@ -31,22 +33,28 @@ export default function TopBar() {
                 className="rounded-full border-2 border-white hover:border-gray-200 transition duration-300"
               />
             )}
-            <span className="text-white font-medium hover:text-gray-200 transition duration-300">
-              Hello, {session.user?.name}
-            </span>
-            <button
-              onClick={() => signOut()}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300 shadow-md hover:shadow-lg"
-            >
-              Logout
-            </button>
+            {!isMobile && (
+              <>
+                <span className="text-white font-medium hover:text-gray-200 transition duration-300">
+                  Hello, {session.user?.name}
+                </span>
+                <button
+                  onClick={() => signOut()}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300 shadow-md hover:shadow-lg"
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </div>
         ) : (
           <button
             onClick={() => signIn('google')}
-            className="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition duration-300 shadow-md hover:shadow-lg"
+            className={`px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition duration-300 shadow-md hover:shadow-lg ${
+              isMobile ? 'text-sm' : ''
+            }`}
           >
-            Login with Google
+            {isMobile ? 'Login' : 'Login with Google'}
           </button>
         )}
       </div>
