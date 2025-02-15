@@ -21,7 +21,11 @@ export default function Home() {
   }, [status, router]);
 
   if (status === "loading") {
-    return <Spinner />;
+    return (
+      <div className="flex justify-center items-center h-screen text-[#3b82f6]">
+        <Spinner size={64} /> 
+      </div>
+    );
   }
 
   return (
