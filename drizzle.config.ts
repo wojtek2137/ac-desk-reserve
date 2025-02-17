@@ -1,4 +1,3 @@
-//ac-desk-reserve/drizzle.config.ts
 import { defineConfig } from 'drizzle-kit';
 import 'dotenv/config';
 
