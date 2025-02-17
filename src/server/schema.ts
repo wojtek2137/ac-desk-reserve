@@ -1,4 +1,3 @@
-//src/server/schema.ts
 import {
   pgTable,
   integer,

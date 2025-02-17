@@ -1,4 +1,3 @@
-// src/components/Topbar.tsx
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';

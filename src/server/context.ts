@@ -1,4 +1,3 @@
-//src/server/context.ts
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "../pages/api/auth/[...nextauth]";
