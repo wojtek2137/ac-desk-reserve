@@ -13,7 +13,7 @@
         "type": "image/png"
       }
     ],
-    "start_url": "https://ac-desk-reserve.vercel.app/home",
+    "start_url": "https://www.ac-desk.click/home",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#004CFF"
