@@ -6,6 +6,7 @@ import Booking from "@/modules/booking";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import MobileBooking from "@/modules/mobileBooking";
 import { Spinner } from '@/components/Spinner';
+import Head from 'next/head';
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -30,6 +31,10 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>AC Desk</title>
+        <meta name="description" content="The title of the app" />
+      </Head>
       <TopBar />
       {isMobile ? (
         <MobileBooking userId={userId} />
