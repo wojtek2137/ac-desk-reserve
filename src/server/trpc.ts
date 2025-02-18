@@ -28,44 +28,62 @@ export const appRouter = t.router({
   }),
 
   reserveDesk: protectedProcedure
-    .input(z.object({
-      deskId: z.number(),
-      dateFrom: z.string(),
-      dateTo: z.string(),
-    }))
-    .mutation(async ({ input, ctx }) => {
-      const { deskId, dateFrom, dateTo } = input;
-      const userId = ctx.session.user?.email || ''; //email as user ID
-      const userName = ctx.session.user?.name || 'Anonymous';
+  .input(z.object({
+    deskId: z.number(),
+    dateFrom: z.string(),
+    dateTo: z.string(),
+  }))
+  .mutation(async ({ input, ctx }) => {
+    const { deskId, dateFrom, dateTo } = input;
+    const userId = ctx.session.user?.email || ''; // email as user ID
+    const userName = ctx.session.user?.name || 'Anonymous';
 
-      const existingReservation = await db
-        .select()
-        .from(reservations)
-        .where(
-          and(
-            eq(reservations.deskId, deskId),
-            eq(reservations.dateFrom, dateFrom)
-          ) 
-        ) 
-        .execute(); 
+    const userReservations = await db
+      .select()
+      .from(reservations)
+      .where(
+        and(
+          eq(reservations.userId, userId),
+          eq(reservations.dateFrom, dateFrom)
+        )
+      )
+      .execute();
 
-      if (existingReservation.length > 0) {
-        throw new TRPCError({
-          code: 'CONFLICT',
-          message: 'This desk is already reserved for the selected date.',
-        });
-      }
-
-      await db.insert(reservations).values({
-        deskId,
-        dateFrom,
-        dateTo,
-        userId,
-        userName,
+    if (userReservations.length > 0) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'You can only reserve one desk per day.',
       });
+    }
 
-      return { success: true, message: 'Reservation successful!' };
-    }),
+    const existingReservation = await db
+      .select()
+      .from(reservations)
+      .where(
+        and(
+          eq(reservations.deskId, deskId),
+          eq(reservations.dateFrom, dateFrom)
+        )
+      )
+      .execute();
+
+    if (existingReservation.length > 0) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'This desk is already reserved for the selected date.',
+      });
+    }
+
+    await db.insert(reservations).values({
+      deskId,
+      dateFrom,
+      dateTo,
+      userId,
+      userName,
+    });
+
+    return { success: true, message: 'Reservation successful!' };
+  }),
 
   getReservations: protectedProcedure.query(async () => {
     const allReservations = await db.select().from(reservations);

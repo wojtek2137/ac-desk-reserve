@@ -3,6 +3,7 @@ import { trpc } from "../utils/trpc";
 import { UserIcon } from "@/Icons/UserIcon";
 import { CalendarIcon } from "@/Icons/CalendarIcon";
 import { Spinner } from './Spinner';
+import { TRPCError } from '@trpc/server';
 
 interface NewDeskProps {
   deskId: number;
@@ -11,15 +12,13 @@ interface NewDeskProps {
   onCheckIn: () => void;
 }
 
-
-
 const Desk: React.FC<NewDeskProps> = ({
   deskId,
   selectedDate,
   userId,
   onCheckIn,
 }) => {
-  const { data: reservations, refetch} = trpc.getReservations.useQuery();
+  const { data: reservations, refetch } = trpc.getReservations.useQuery();
   const reserveDesk = trpc.reserveDesk.useMutation({
     onSuccess: () => refetch(),
   });
@@ -27,21 +26,41 @@ const Desk: React.FC<NewDeskProps> = ({
     onSuccess: () => refetch(),
   });
 
-  const handleCheckin = () => {
-    const dateFrom = `${selectedDate}T09:00`;
-    const dateTo = `${selectedDate}T17:00`;
-    reserveDesk.mutate({ deskId, dateFrom, dateTo });
-    onCheckIn();
-  };
-
-  const handleRelease = () => {
-    const dateFrom = `${selectedDate}T09:00`;
-    removeReservation.mutate({ deskId, dateFrom });
-  };
+  const userHasReservation = reservations?.some(
+    (res) => res.userId === userId && res.dateFrom.startsWith(selectedDate)
+  );
 
   const existingReservation = reservations?.find(
     (res) => res.deskId === deskId && res.dateFrom.startsWith(selectedDate)
   );
+
+  const handleCheckin = async () => {
+    const dateFrom = `${selectedDate}T09:00`;
+    const dateTo = `${selectedDate}T17:00`;
+    try {
+      await reserveDesk.mutateAsync({ deskId, dateFrom, dateTo });
+      onCheckIn();
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        alert(error.message); 
+      } else {
+        console.error("An error occurred:", error);
+      }
+    }
+  };
+
+  const handleRelease = async () => {
+    const dateFrom = `${selectedDate}T09:00`;
+    try {
+      await removeReservation.mutateAsync({ deskId, dateFrom });
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        alert(error.message);
+      } else {
+        console.error("An error occurred:", error);
+      }
+    }
+  };
 
   let marginBottom = 0;
   if (deskId <= 4 || (deskId > 8 && deskId <= 12)) {
@@ -92,8 +111,12 @@ const Desk: React.FC<NewDeskProps> = ({
       ) : (
         <button
           onClick={handleCheckin}
-          className="mt-4 cursor-pointer px-4 py-2 bg-[#004CFF] text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
-          disabled={reserveDesk.status === "pending"}
+          className={`mt-4 cursor-pointer px-4 py-2 ${
+            userHasReservation || reserveDesk.status === "pending"
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-[#004CFF] hover:bg-blue-600"
+          } text-white font-semibold rounded-lg transition-colors`}
+          disabled={userHasReservation || reserveDesk.status === "pending"}
         >
           {reserveDesk.status === "pending" ? <Spinner /> : "Book"}
         </button>
