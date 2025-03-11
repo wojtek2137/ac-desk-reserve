@@ -21,3 +21,9 @@ docker compose -f compose.dev.yaml down -v
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## local env variables to add in .env file
+```bash
+GOOGLE_CLIENT_ID=<ID>
+GOOGLE_CLIENT_SECRET=<SECRET>
+```

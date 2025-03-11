@@ -1,6 +1,6 @@
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
-import type { AppRouter } from '../server/trpc';
+import type { AppRouter } from '@/server/trpc';
 function getBaseUrl() {
   if (typeof window !== 'undefined')
     // browser should use relative path
@@ -9,12 +9,10 @@ function getBaseUrl() {
     // reference for vercel.com
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   }
+  if (process.env.APP_PUBLIC_URL) {
+    return `${process.env.APP_PUBLIC_URL}`;
+  }
 
-//   if (process.env.RENDER_INTERNAL_HOSTNAME)
-//     // reference for render.com
-//     return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
-  // assume localhost
-  // return `https://ac-desk-reserve.vercel.app`;
   return `http://localhost:${process.env.PORT}`;
 }
 export const trpc = createTRPCNext<AppRouter>({

@@ -1,32 +1,26 @@
 services:
-  next-app:
-    container_name: next-app
+  next-app-prod:
+    container_name: next-app-prod
     build:
-      dockerfile: dev.Dockerfile
-
+      dockerfile: prod.Dockerfile
     # Set environment variables directly in the compose file
     environment:
-      NODE_ENV: 'development'
+      NODE_ENV: 'production'
       APP_PUBLIC_URL: 'http://localhost:3000'
+      GOOGLE_CLIENT_ID: ''
+      GOOGLE_CLIENT_SECRET: ''
       NEXTAUTH_URL: 'http://localhost:3000'
-      NEXTAUTH_SECRET: 'secret'
-      DATABASE_URL: 'postgres://postgres:postgres@postgres:5432/postgres'
+      NEXTAUTH_SECRET: ''
+      DATABASE_URL: ''
 
-    # Set environment variables based on the .env file
-    env_file:
-      - .env
-    volumes:
-      - ./src:/app/src
-      - ./public:/app/public
-    restart: always
     ports:
       - 3000:3000
     networks:
       - app_network
     depends_on:
-      - postgres
+      - postgres-prod
 
-  postgres:
+  postgres-prod:
     image: postgres:latest
     ports:
       - 5432:5432
