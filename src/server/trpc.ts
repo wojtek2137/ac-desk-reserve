@@ -85,7 +85,7 @@ export const appRouter = t.router({
     return { success: true, message: 'Reservation successful!' };
   }),
 
-  getReservations: protectedProcedure.query(async () => {
+  getReservations: t.procedure.query(async () => {
     const allReservations = await db.select().from(reservations);
     return allReservations;
   }),
