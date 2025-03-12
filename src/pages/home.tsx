@@ -34,6 +34,11 @@ export default function Home() {
       <Head>
         <title>AC Desk</title>
         <meta name="description" content="The title of the app" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/web-app-manifest-192x192.png" />  
+        <link rel="apple-touch-icon" href="/web-app-manifest-512x512.png"/> 
+        <meta name="theme-color" content="#004CFF" />
+        <meta name="description" content="Mobile app for AC desk reservations" />  
       </Head>
       <TopBar />
       {isMobile ? (
