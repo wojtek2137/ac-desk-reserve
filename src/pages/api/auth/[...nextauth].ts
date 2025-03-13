@@ -1,4 +1,4 @@
-import NextAuth from "next-auth"
+import NextAuth, { User } from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
@@ -9,6 +9,17 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  callbacks: {
+    async signIn({ user }: { user: User}) {
+      if (user.email?.endsWith("@activecampaign.com")) {
+        return true; 
+      }
+      return false; 
+    },
+  },
+  pages: {
+    error: "/auth/error", 
+  },
 }
 
 export default NextAuth(authOptions)
