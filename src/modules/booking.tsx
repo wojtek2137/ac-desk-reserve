@@ -25,6 +25,15 @@ const Booking = ({ userId }: BookingProps) => {
     refetchReservations();
   };
 
+  const changeDateByDay = (step: number) => {
+    const currentDate = new Date(selectedDate);
+    const newDate = new Date();
+    newDate.setDate(currentDate.getDate() + step);
+
+    setSelectedDate(newDate.toISOString().split('T')[0]);
+    refetchReservations();
+  };
+
   return (
     <div className='p-4 relative grid grid-flow-col gap-3 mt-[90px]'>
       {isLoading ? (
@@ -54,6 +63,7 @@ const Booking = ({ userId }: BookingProps) => {
         <DatePicker
           selectedDate={selectedDate}
           setSelectedDateHandler={setSelectedDateHandler}
+          incrementalDateChangeHandler={changeDateByDay}
         />
         <MyBookings />
       </Sidebar>

@@ -22,6 +22,16 @@ const MobileBooking = ({ userId }: BookingProps) => {
     refetch();
   };
 
+  const changeDateByDay = (step: number) => {
+    const currentDate = new Date(selectedDate);
+    const newDate = new Date();
+    newDate.setDate(currentDate.getDate() + step);
+
+    setSelectedDate(newDate.toISOString().split('T')[0]);
+    refetch();
+  };
+
+
   const reserveDesk = trpc.reserveDesk.useMutation({
     onSuccess: () => {
       refetch();
@@ -46,6 +56,7 @@ const MobileBooking = ({ userId }: BookingProps) => {
       <DatePicker
         selectedDate={selectedDate}
         setSelectedDateHandler={setSelectedDateHandler}
+        incrementalDateChangeHandler={changeDateByDay}
       />
       <div className="w-full mb-10">
         <h1 className="text-2xl block text-black font-bold mb-2 border-b-2">
