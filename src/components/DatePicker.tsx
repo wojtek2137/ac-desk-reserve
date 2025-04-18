@@ -16,6 +16,8 @@ const DatePicker = ({
   setSelectedDateHandler,
   incrementalDateChangeHandler
 }: DatePickerProps) => {
+  const minDate = format(new Date(), 'yyyy-MM-dd')
+
   return (
     <div className="text-black flex flex-col gap-2 items-start mb-10">
       <h1 className="w-full text-2xl font-bold mb-4 border-b-2">
@@ -23,7 +25,11 @@ const DatePicker = ({
       </h1>
       <div className="flex items-center max-w-md">
         <div className="flex-col">
-          <button className="button p-2 mr-1 border rounded bg-[#004CFF] active:bg-[#001961] text-white" onClick={() => incrementalDateChangeHandler(-1)}>
+          <button
+            className="button p-2 mr-1 border rounded bg-[#004CFF] active:bg-[#001961] disabled:bg-[#EEF0F2] disabled:text-[#7D8799] text-white"
+            onClick={() => incrementalDateChangeHandler(-1)}
+            disabled={minDate === selectedDate}
+          >
             <PrevIcon/>
           </button>
         </div>
@@ -32,7 +38,7 @@ const DatePicker = ({
             type="date"
             value={selectedDate}
             onChange={setSelectedDateHandler}
-            min={format(new Date(), 'yyyy-MM-dd')}
+            min={minDate}
             className="p-2 border rounded text-black focus:outline-none"
           />
         </div>
