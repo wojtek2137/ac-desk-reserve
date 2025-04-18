@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { addDays, format } from 'date-fns';
 import { trpc } from '@/utils/trpc';
 import DatePicker from '@/components/DatePicker';
 import SelectDeskOption from '@/components/SelectDeskOption';
@@ -10,7 +11,7 @@ interface BookingProps {
 
 const MobileBooking = ({ userId }: BookingProps) => {
   const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split('T')[0]
+    format(new Date(), 'yyyy-MM-dd')
   );
   const { data: desks } = trpc.getDesks.useQuery();
   const { data: reservations, refetch } = trpc.getReservations.useQuery();
@@ -23,11 +24,8 @@ const MobileBooking = ({ userId }: BookingProps) => {
   };
 
   const changeDateByDay = (step: number) => {
-    const currentDate = new Date(selectedDate);
-    const newDate = new Date();
-    newDate.setDate(currentDate.getDate() + step);
-
-    setSelectedDate(newDate.toISOString().split('T')[0]);
+    const newDate = addDays(new Date(selectedDate), step);
+    setSelectedDate(format(newDate, 'yyyy-MM-dd'));
     refetch();
   };
 

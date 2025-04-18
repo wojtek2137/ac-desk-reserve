@@ -1,4 +1,5 @@
 import React from "react";
+import { format } from "date-fns";
 import { getFormattedDate } from "@/utils/getFormattedDate";
 import { CalendarIcon } from '@/Icons/CalendarIcon';
 import { PrevIcon } from "@/Icons/PrevIcon";
@@ -31,7 +32,7 @@ const DatePicker = ({
             type="date"
             value={selectedDate}
             onChange={setSelectedDateHandler}
-            min={new Date().toISOString().split("T")[0]}
+            min={format(new Date(), 'yyyy-MM-dd')}
             className="p-2 border rounded text-black focus:outline-none"
           />
         </div>

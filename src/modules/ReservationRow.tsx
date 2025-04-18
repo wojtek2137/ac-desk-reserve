@@ -1,6 +1,6 @@
 import React from 'react';
+import { format } from 'date-fns';
 import { trpc } from '@/utils/trpc';
-
 import { Spinner } from '@/components/Spinner';
 import { RemoveIcon } from '@/Icons/RemoveIcon';
 
@@ -13,13 +13,13 @@ export interface ReservationType {
   userName: string;
 }
 interface ReservationRowProps {
-    reservation: ReservationType;
+  reservation: ReservationType;
 }
 
 const ReservationRow = ({ reservation }: ReservationRowProps) => {
   const { deskId, id, dateFrom } = reservation;
-  const formattedDate = new Date(dateFrom).toISOString().split('T')[0];
-    const { refetch } = trpc.getReservations.useQuery();
+  const formattedDate = format(dateFrom, 'yyyy-MM-dd');
+  const { refetch } = trpc.getReservations.useQuery();
 
   const removeReservation = trpc.removeReservation.useMutation({
     onSuccess: () => refetch(),
