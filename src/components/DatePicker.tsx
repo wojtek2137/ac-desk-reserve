@@ -21,13 +21,13 @@ const DatePicker = ({
       <h1 className="w-full text-2xl font-bold mb-4 border-b-2">
         Select Date
       </h1>
-      <div className="flex items-end max-w-md">
+      <div className="flex items-center max-w-md">
         <div className="flex-col">
-          <button className="button p-2 mr-1 border rounded bg-[#004CFF] text-white" onClick={() => incrementalDateChangeHandler(-1)}>
+          <button className="button p-2 mr-1 border rounded bg-[#004CFF] active:bg-[#001961] text-white" onClick={() => incrementalDateChangeHandler(-1)}>
             <PrevIcon/>
           </button>
         </div>
-        <div className="flex-col items-end">
+        <div className="flex-col">
           <input
             type="date"
             value={selectedDate}
@@ -36,8 +36,8 @@ const DatePicker = ({
             className="p-2 border rounded text-black focus:outline-none"
           />
         </div>
-        <div>
-          <button className="button p-2 ml-1 border rounded bg-[#004CFF] text-white" onClick={() => incrementalDateChangeHandler(1)}>
+        <div className="flex-col">
+          <button className="button p-2 ml-1 border rounded bg-[#004CFF] active:bg-[#001961] text-white" onClick={() => incrementalDateChangeHandler(1)}>
             <NextIcon/>
           </button>
         </div>
