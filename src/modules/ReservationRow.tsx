@@ -1,5 +1,5 @@
 import React from 'react';
-import { format } from 'date-fns';
+import { getShortFormattedDate } from '@/utils/date';
 import { trpc } from '@/utils/trpc';
 import { Spinner } from '@/components/Spinner';
 import { RemoveIcon } from '@/Icons/RemoveIcon';
@@ -18,7 +18,7 @@ interface ReservationRowProps {
 
 const ReservationRow = ({ reservation }: ReservationRowProps) => {
   const { deskId, id, dateFrom } = reservation;
-  const formattedDate = format(dateFrom, 'yyyy-MM-dd');
+  const formattedDate = getShortFormattedDate(new Date(dateFrom));
   const { refetch } = trpc.getReservations.useQuery();
 
   const removeReservation = trpc.removeReservation.useMutation({

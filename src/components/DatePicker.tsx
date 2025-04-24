@@ -1,6 +1,5 @@
 import React from "react";
-import { format } from "date-fns";
-import { getFormattedDate } from "@/utils/getFormattedDate";
+import { getFormattedDate, getShortFormattedDate } from "@/utils/date";
 import { CalendarIcon } from '@/Icons/CalendarIcon';
 import { PrevIcon } from "@/Icons/PrevIcon";
 import { NextIcon } from "@/Icons/NextIcon";
@@ -16,7 +15,7 @@ const DatePicker = ({
   setSelectedDateHandler,
   incrementalDateChangeHandler
 }: DatePickerProps) => {
-  const minDate = format(new Date(), 'yyyy-MM-dd')
+  const minDate = getShortFormattedDate(new Date())
 
   return (
     <div className="text-black flex flex-col gap-2 items-start mb-10">
