@@ -43,6 +43,6 @@ volumes:
   db:
     driver: local
 
-networks:
+networks: 
   app_network:
     external: true
